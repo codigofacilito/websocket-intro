@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <section>
+    <header>
+      <h1>Mensajes</h1>
+    </header>
+    <ul></ul>
+  </section>
+  <form id="form">
+    <input type="text" name="message" id="message">
+    <input type="submit" value="Enviar">
+  </form>
+
+
+  <script>
+    let client = new WebSocket('ws://localhost:8080','echo-protocol');
+
+    client.onmessage = function(e){
+      console.log(e.data);
+      let newElement = `<li>${e.data}</li>`;
+      document.querySelector("ul").innerHTML = newElement + document.querySelector("ul").innerHTML;
+    }
+
+    document.querySelector("#form").addEventListener("submit",(ev)=>{
+      ev.preventDefault();
+      let message = document.querySelector("#message").value;
+      client.send(message);
+    })
+  </script>
+</body>
+</html>
